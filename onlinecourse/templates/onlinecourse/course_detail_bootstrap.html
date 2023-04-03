@@ -54,35 +54,28 @@
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
-            <!--
-
-            A collapse example here:
-            <div id="exam" class="collapse">
-                Click to expand elements within the collapse div
-                </div>
-
-            -->
-
+            <!--A collapse example here:-->
+            {% if user.is_authenticated %}
             <!-- <HINT> If user is authenticated, show course exam with a list of question -->
-
             <!-- <HINT> Each example will have many questions -->
-
             <!-- <HINT> Each question will have many choices -->
-
-
             <!-- <HINT> Create a form to collect the selected choices for all questions -->
-            <!-- <HINT> For each question choice, you may create a checkbox input like
-            <input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...>
-            -->
+            <!-- <HINT> For each question choice, you may create a checkbox input like-->
+            <!--<input type="check" name="choice_{{choice.id}}" id="{{choice.id}}" ...>-->
+            
 
-            <!-- A choice submission form example
-            <form id="questionform" action="point to a submit view" method="post">
-                        ... for each question in the course ...
+            <!-- A choice submission form example -->
+        <!--<div id="exam" class="collapse">
+            Click to expand elements within the collapse div
+        </div>-->
+            <form  id="questionform" action="point to a submit view" method="post">
+                        
                         <div class="card mt-1">
+                            {% for question in course.question_set.all %}
                             <div class="card-header"><h5>{{ question.question_text}}</h5></div>
                             {% csrf_token %}
                             <div class="form-group">
-                               ... for each choice in the question ...
+                               {% for choice in question.choice_set.all %}
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input type="checkbox" name="choice_{{choice.id}}"
@@ -90,11 +83,20 @@
                                                value="{{choice.id}}">{{ choice.choice_text }}
                                     </label>
                                 </div>
+                                {% endfor %}
                             </div>
+                            {% endfor %}
                         </div>
+                        
                     <input class="btn btn-success btn-block" type="submit" value="Submit">
-            </form> -->
-
+            </form>
+            {% else %} 
+            <div class="container">
+                <div class="jumbotron">
+                    <h1 class="text-center" href="{% url 'onlinecourse:registration' %}">Please Register to view course materials.</h1>
+                </div>
+            </div>
+            {% endif %}
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
     </div>
