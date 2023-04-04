@@ -101,9 +101,6 @@ def enroll(request, course_id):
 
     return HttpResponseRedirect(reverse(viewname='onlinecourse:course_details', args=(course.id,)))
 
-class Exam_Submit_View(generic.DateDetailView):
-    model = Submission
-
 # <HINT> Create a submit view to create an exam submission record for a course enrollment,
 # you may implement it based on following logic:
          # Get user and course object, then get the associated enrollment object created when the user enrolled the course
@@ -114,11 +111,11 @@ class Exam_Submit_View(generic.DateDetailView):
 def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     user = request.user
-    Enrollment.objects.get(user=user, course=course.pk)
+    enrollment = Enrollment.objects.get(user=user, course=course.pk)
     Submission.objects.create(enrollment=Enrollment.course, user=Enrollment.user, submisison=[])
     Submission.submisison = extract_answers(request)
 
-    return HttpResponseRedirect(reverse(viewname='onlinecourse:exam_result', args=(submission.id,)))
+    return HttpResponseRedirect(reverse(viewname='show_exam_result', args=(request, submission.course, submission.id,)))
 
 def extract_answers(request):
     submitted_anwsers = []
@@ -131,12 +128,12 @@ def extract_answers(request):
 
 
 # <HINT> Create an exam result view to check if learner passed exam and show their question results and result for each question,
-class Show_exam_result(generic.DetailView):
-    model = Submission
-    template_name = 'onlinecourse/exam_result_bootstrap.html'
 # you may implement it based on the following logic:
         # Get course and submission based on their ids
         # Get the selected choice ids from the submission record
         # For each selected choice, check if it is a correct answer or not
         # Calculate the total score
 def show_exam_result(request, course_id, submission_id):
+    context = {}
+
+    return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
