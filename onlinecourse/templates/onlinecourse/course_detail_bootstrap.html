@@ -68,7 +68,7 @@
         <!--<div id="exam" class="collapse">
             Click to expand elements within the collapse div
         </div>-->
-            <form  id="questionform" action="point to a submit view" method="post">
+            <form  id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
                         
                         <div class="card mt-1">
                             {% for question in course.question_set.all %}
