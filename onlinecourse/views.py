@@ -109,13 +109,18 @@ def enroll(request, course_id):
          # Add each selected choice object to the submission object
          # Redirect to show_exam_result with the submission id
 def submit(request, course_id):
-
+    context = {}
     course = get_object_or_404(Course, pk=course_id)
-    #user = request.user
-    #enrollment = Enrollment.objects.get(user=user, course=course.pk)
-    #Submission.objects.create(enrollment=Enrollment.course, user=Enrollment.user, submisison=[])
-    #Submission.submisison = extract_answers(request)
-    return HttpResponseRedirect(reverse(viewname='show_exam_result', args=(course.id,)))
+    user = request.user
+    enrollment = Enrollment.objects.get(user=user, course=course_id)
+    submission = Submission.objects.create(enrollment=enrollment)
+
+    submission.choices.set(extract_answers(request))
+    
+    print('type: ',submission.choices.all())
+    #return HttpResponseRedirect(reverse(viewname='show_exam_result', args=(course.id,)))
+
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:course_details', args=(course.id,)))
     
 
    
