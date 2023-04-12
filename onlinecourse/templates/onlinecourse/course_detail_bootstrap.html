@@ -42,15 +42,15 @@
     <!-- Page content -->
     <div class="container-fluid">
             <h2>{{ course.name }}</h2>
-            <div class="card-columns-vertical">
-                {% for lesson in course.lesson_set.all %}
-                    <div class="card mt-1">
-                        <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
-                        <div class="card-body">{{lesson.content}}</div>
-                    </div>
-                {% endfor %}
-            </div>
-            <!-- Task: show questions and choices -->
+                <div class="card-columns-vertical">
+                    {% for lesson in course.lesson_set.all %}
+                        <div class="card mt-1">
+                            <div class="card-header"><h5>Lesson {{lesson.order|add:1}}: {{lesson.title}}</h5></div>
+                            <div class="card-body">{{lesson.content}}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+           <!-- Task: show questions and choices -->
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
@@ -68,7 +68,7 @@
         
             <!-- Click to expand elements within the collapse div -->
                 <button class="btn btn-primary btn-block" data-toggle="collapse" data-target="#exam">Start Exam</button>
-                <!--<div id="exam" class="collapse" data-parent="#questionform">-->
+                <div id="exam" class="collapse" data-parent="#questionform">
                     <form  id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
                                 <div class="card mt-1">
                                     {% for question in course.question_set.all %}
